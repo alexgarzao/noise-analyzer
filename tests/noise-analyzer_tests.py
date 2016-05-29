@@ -1,3 +1,8 @@
+# -*- encoding: utf-8 -*-
+# Noise wave analyzer
+# Author: Alex S. Garzão <alexgarzao@gmail.com>
+# noise-analyzer_tests.py
+
 from nose.tools import *
 from noise_analyzer import NoiseWaveAnalyzer
 
