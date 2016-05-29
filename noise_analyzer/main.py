@@ -5,6 +5,7 @@
 
 from analyzer_config import AnalyzerConfig
 from NoiseWaveAnalyzer import NoiseWaveAnalyzer
+from receiving_data import ReceivingData
 
 class Main:
 	'''Main class. Where the magic start to happen :-)
@@ -21,6 +22,9 @@ class Main:
 		'''Execute the program.
 		'''
 		print 'Starting analyzer...'
+
+		receivingData = ReceivingData(analyzer = self.NoiseWaveAnalyzer, port = self.Config.Port)
+		receivingData.ReadAndAnalyze()
 
 		print 'Analyzer finishing...'
 

@@ -14,6 +14,7 @@ class AnalyzerConfig:
 		'''Initialize default values.
 		'''
 		self.Threshold = 100
+		self.Port = 55678 # Arbitraty port.
 
 
 	def load(self):
