@@ -15,4 +15,20 @@ class NoiseWaveAnalyzer:
 		self.Threshold = threshold
 
 	def IsNoise(self, value):
+		'''Verifiy if the value is a noise.
+
+		value: data to be analyzed.
+		'''
 		return value <= self.Threshold
+
+
+	def ProcessValues(self, data):
+		'''Process values in data to known if its a noise.
+
+		data - list with the numerical values to be analyzed.
+		'''
+		for value in data:
+			if not self.IsNoise(value):
+				continue
+
+			print "Noise: %s" % value
