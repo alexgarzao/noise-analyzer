@@ -9,6 +9,7 @@ class StreamToNumber:
 		self.buffer = ''
 
 	def ProcessStream(self, streamData):
+		streamData = self.buffer + streamData
 		self.buffer = ''
 		for c in streamData:
 			if c == '\n' or c == '\r':
