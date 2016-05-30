@@ -14,12 +14,11 @@ def test_stream_with_one_value():
 	remainingData = stn.ProcessStream(streamData)
 
 	assert stn.Size() == 1
-	assert remainingData == ''
+	assert remainingData == '', 'expected nothing, but remainingData = "%s"' % remainingData
 
 	numericalValues = stn.GetNumericalValues()
 	assert stn.Size() == 0
 	assert numericalValues[0] == 123
-
 
 def test_stream_with_two_values():
 	stn = stream_to_number.StreamToNumber()
@@ -35,3 +34,42 @@ def test_stream_with_two_values():
 	assert stn.Size() == 0
 	assert numericalValues[0] == 123
 	assert numericalValues[1] == 456
+
+def test_stream_with_one_complete_and_one_incomplete_value():
+	stn = stream_to_number.StreamToNumber()
+	assert stn.Size() == 0
+
+	remainingData = stn.ProcessStream('123\n456')
+
+	assert stn.Size() == 1
+	assert remainingData == '456', 'expected 456, but remainingData = "%s"' % remainingData
+
+	numericalValues = stn.GetNumericalValues()
+	assert stn.Size() == 0
+	assert numericalValues[0] == 123
+
+def test_stream_with_one_incomplete_value():
+	stn = stream_to_number.StreamToNumber()
+	assert stn.Size() == 0
+
+	remainingData = stn.ProcessStream('123')
+
+	assert stn.Size() == 0
+	assert remainingData == '123', 'expected 123, but remainingData = "%s"' % remainingData
+
+	numericalValues = stn.GetNumericalValues()
+	assert stn.Size() == 0
+
+def test_stream_with_one_value_but_starting_with_delimiter():
+	stn = stream_to_number.StreamToNumber()
+	assert stn.Size() == 0
+
+	streamData = '\n123\n'
+	remainingData = stn.ProcessStream(streamData)
+
+	assert stn.Size() == 1
+	assert remainingData == ''
+
+	numericalValues = stn.GetNumericalValues()
+	assert stn.Size() == 0
+	assert numericalValues[0] == 123
