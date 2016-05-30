@@ -12,8 +12,9 @@ class StreamToNumber:
 		self.buffer = ''
 		for c in streamData:
 			if c == '\n' or c == '\r':
-				self.values.append(int(self.buffer))
-				self.buffer = ''
+				if self.buffer != '':
+					self.values.append(int(self.buffer))
+					self.buffer = ''
 			else:
 				self.buffer += c
 		return self.buffer
