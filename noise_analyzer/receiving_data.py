@@ -6,6 +6,8 @@
 
 import socket
 
+from stream_to_number import StreamToNumber
+
 
 class ReceivingData:
 	'''Responsible for accept connections, read the data and send to the defined analyzer.
@@ -23,16 +25,20 @@ class ReceivingData:
 
 
 	def ReadAndAnalyze(self):
+		'''Read the stream data, parser into numerical values, and send to the analyzer class.
+		'''
 		print 'Reading at port %s' % self.Port
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.bind(('', self.Port)) # Available in all interfaces.
 		s.listen(1)
 		while True:
+			streamParser = StreamToNumber()
 			conn, addr = s.accept()
-#			print 'Connected by', addr
 			while 1:
 				data = conn.recv(1024)
 				if not data: break
-				conn.sendall(data)
-				print 'data reived: %s' % data
+#				print 'data reiceved: %s' % data
+				streamParser.ProcessStream(data)
+				if streamParser.Size() > 1:
+					self.Analyzer.ProcessValues(streamParser.GetNumericalValues())
 			conn.close()
