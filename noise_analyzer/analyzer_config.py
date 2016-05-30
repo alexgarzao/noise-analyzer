@@ -15,6 +15,7 @@ class AnalyzerConfig:
 		'''
 		self.Threshold = 100
 		self.Port = 55678 # Arbitraty port.
+		self.NoiseFilename = 'noise.csv'
 
 
 	def load(self):
