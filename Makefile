@@ -8,6 +8,8 @@ tdd:
 run:
 	python noise_analyzer/main.py
 
+tests:	tdd
+
 clean:
 	rm -f noise.csv
 	rm -f noise_analyzer/*.pyc
