@@ -6,15 +6,16 @@
 
 class NoiseWaveAnalyzer:
     '''NoiseWaveAnalyzer receives a sample rate value and, based on this value, can decide if the data is a good signal or a noise.
-    To decide this, after found the highest value, the analyzer count, based on the sample_rate, the number of samples to be ignored before the noise values.
+    To decide this, after found the highest value, the analyzer counts, based on the sample_rate, the number of samples to be ignored before the noise values.
     With this same approach, the analyzer knows how much samples are to be considered noise values.
     '''
 
     # Possible machine states (FSM) when trying to identify noise values.
     ANALYZER_STATE_WAITING_VALUES_INCREASING = 1
     ANALYZER_STATE_SEARCHING_HIGHEST_VALUE = 2
-    ANALYZER_STATE_SEARCHING_ERROR = 3
-    ANALYZER_STATE_PROCESSING_ERROR = 4
+    ANALYZER_STATE_ONE_LOWER_VALUE_FOUND = 3
+    ANALYZER_STATE_SEARCHING_ERROR = 4
+    ANALYZER_STATE_PROCESSING_ERROR = 5
 
     def __init__(self, sample_rate, noise_filename=None):
         '''Initialize the object.
@@ -40,7 +41,7 @@ class NoiseWaveAnalyzer:
         # Bellow there is a FSM (Finish state machine) responsible to find noise values.
         # To achieve this, the FSM execute the following steps:
         # 1) Find when the values are been incresed;
-        # 2) Find the highest value in the stream;
+        # 2) Find the highest value in the stream (1 hole is supported)
         # 3) Based on the sample_rate parameter, count the samples to be ignored before found the noise;
         # 4) Inform the samples that there are noise values;
         # 5) Go to state 2.
@@ -53,12 +54,23 @@ class NoiseWaveAnalyzer:
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
-            if value >= self.priorValue:
+            if value  >= self.priorValue:
                 self.priorValue = value
                 return False
 
+            self.priorValue = value
+            self.state = NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND
+            return False
+
+        if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND:
+            if value >= self.priorValue:
+                self.priorValue = value
+                self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
+                return False
+
+            # Two lower values found. Values are decreasing now.
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR
-            self.steps = 1
+            self.steps = 2
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR:
             self.steps += 1
@@ -75,6 +87,7 @@ class NoiseWaveAnalyzer:
 
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
             self.priorValue = 0
+            self.steps = 0
             return False
 
         assert False, 'Ops... State machine with error :-)'

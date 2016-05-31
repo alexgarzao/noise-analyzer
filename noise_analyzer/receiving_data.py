@@ -32,11 +32,12 @@ class ReceivingData:
         while True:
             streamParser = StreamToNumber()
             conn, addr = s.accept()
+            print 'Connection received...'
             while 1:
                 data = conn.recv(1024)
                 if not data:
                     break
-#                print 'data reiceved: %s' % data
+                # print 'data reiceved: %s' % data
                 streamParser.ProcessStream(data)
                 if streamParser.Size() > 1:
                     self.Analyzer.ProcessValues(streamParser.GetNumericalValues())
