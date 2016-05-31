@@ -14,7 +14,7 @@ lint:
 	pylint *.py noise_analyzer/*.py tests/*.py
 
 pep8:
-	pep8 *.py noise_analyzer/*.py tests/*.py
+	pep8 *.py noise_analyzer/*.py tests/*.py tests/features/*.py
 
 clean:
 	rm -f noise.csv
