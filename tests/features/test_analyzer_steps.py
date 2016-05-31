@@ -12,10 +12,12 @@ def send_this_file_to_analyzer(step):
     s = socket.socket()
     s.connect(("localhost",55678))
 
-    sample_list = [line.strip() for line in open(world.filename, 'rb').read().splitlines()]
+    with open(world.filename, "rb") as f:
+        l = f.read(1024)
+        while (l):
+            s.send(l)
+            l = f.read(1024)
 
-    for sample in sample_list:
-        s.send(sample + '\n')
     s.close()
 
 @step('I see noise values equals to file "(.*)"')

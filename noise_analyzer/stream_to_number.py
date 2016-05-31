@@ -20,7 +20,7 @@ class StreamToNumber:
         streamData = self.buffer + streamData
         self.buffer = ''
         for c in streamData:
-            if c == '\n' or c == '\r' == ' ':
+            if c < '0' or c > '9':
                 if self.buffer != '':
                     self.values.append(int(self.buffer))
                     self.buffer = ''
