@@ -1,4 +1,4 @@
-# noise-analyzer
+# Noise analyzer
 This analyzer interprets and filters noise in a signal. The noise values are in a previsible place (lower part in the wave). The sample rate is constant, and after found the highest value in a wave, is possible to filter the noise values.
 
 ## How to use
