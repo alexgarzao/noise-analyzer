@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 # Noise wave analyzer
 # Author: Alex S. Garzão <alexgarzao@gmail.com>
-# NoiseWaveAnalyzer.py
+# noise_wave_analyzer.py
 
 
 

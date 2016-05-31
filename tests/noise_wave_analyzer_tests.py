@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 # Noise wave analyzer
 # Author: Alex S. Garzão <alexgarzao@gmail.com>
-# noise-analyzer_tests.py
+# noise_wave_analyzer_tests.py
 
 from nose.tools import *
-from noise_analyzer import NoiseWaveAnalyzer
+from noise_analyzer import noise_wave_analyzer
 
 def setup():
     print "SETUP!"
@@ -16,7 +16,7 @@ def test_basic():
     print "I RAN!"
 
 def test_signal_is_noise():
-	analyzer = NoiseWaveAnalyzer.NoiseWaveAnalyzer(sample_rate=8)
+	analyzer = noise_wave_analyzer.NoiseWaveAnalyzer(sample_rate=8)
 	assert analyzer.IsNoise(50) == False
 
 	assert analyzer.IsNoise(55) == False # Highest
