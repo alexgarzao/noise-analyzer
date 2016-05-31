@@ -4,7 +4,7 @@
 # main.py
 
 from analyzer_config import AnalyzerConfig
-from NoiseWaveAnalyzer import NoiseWaveAnalyzer
+from noise_wave_analyzer import NoiseWaveAnalyzer
 from receiving_data import ReceivingData
 
 class Main:
