@@ -6,14 +6,6 @@
 from nose.tools import *
 from noise_analyzer import noise_wave_analyzer
 
-def setup():
-    print "SETUP!"
-
-def teardown():
-    print "TEAR DOWN!"
-
-def test_basic():
-    print "I RAN!"
 
 def test_signal_is_noise():
 	analyzer = noise_wave_analyzer.NoiseWaveAnalyzer(sample_rate=8)
