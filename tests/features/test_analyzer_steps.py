@@ -30,11 +30,3 @@ def see_noise_values_equals_to_file(step, noise_filename, expected_noise_filenam
 
     assert filecmp.cmp(noise_filename, expected_noise_filename) == True, \
         "Noise file %s differ from expected file %s" % (noise_filename, expected_noise_filename)
-
-def factorial(number):
-    number = int(number)
-    if (number == 0) or (number == 1):
-        return 1
-    else:
-        return number*factorial(number-1)
-
