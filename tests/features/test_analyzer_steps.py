@@ -14,16 +14,7 @@ def have_the_file(step, filename):
 
 @step('I send this file to analyzer')
 def send_this_file_to_analyzer(step):
-    s = socket.socket()
-    s.connect(("localhost", 55678))
-
-    with open(world.filename, "rb") as f:
-        l = f.read(1024)
-        while (l):
-            s.send(l)
-            l = f.read(1024)
-
-    s.close()
+    send_file_to_server(host="localhost", port=55678, filename=world.filename)
 
 
 @step('I see noise values in file "(.*)" equals to file "(.*)"')
@@ -33,3 +24,25 @@ def see_noise_values_equals_to_file(step, noise_filename, expected_noise_filenam
 
     assert filecmp.cmp(noise_filename, expected_noise_filename) is True, \
         "Noise file %s differ from expected file %s" % (noise_filename, expected_noise_filename)
+
+
+#-- Support routines --#
+
+
+def send_file_to_server(host, port, filename):
+    '''Send a file to a server.
+
+    host - hostname where the server is running
+    port - port where the service is running
+    filename - file to be sent
+    '''
+    s = socket.socket()
+    s.connect((host, port))
+
+    with open(filename, "rb") as f:
+        l = f.read(1024)
+        while (l):
+            s.send(l)
+            l = f.read(1024)
+
+    s.close()
