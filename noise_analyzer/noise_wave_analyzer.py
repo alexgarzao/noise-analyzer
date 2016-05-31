@@ -59,6 +59,7 @@ class NoiseWaveAnalyzer:
         # 4) Inform the samples that there are noise values;
         # 5) Go to state 2.
 
+        # State WAITING_VALUES_INCREASING
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING:
             if value <= self.prior_value or self.prior_value == 0:
                 self.prior_value = value
@@ -66,6 +67,7 @@ class NoiseWaveAnalyzer:
 
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 
+        # State SEARCHING_HIGHEST_VALUE
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
             if value >= self.prior_value:
                 self.prior_value = value
@@ -75,6 +77,7 @@ class NoiseWaveAnalyzer:
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND
             return False
 
+        # State ONE_LOWER_VALUE_FOUND
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND:
             if value >= self.prior_value:
                 self.prior_value = value
@@ -85,6 +88,7 @@ class NoiseWaveAnalyzer:
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR
             self.steps = 2
 
+        # State SEARCHING_ERROR
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR:
             self.steps += 1
             if self.steps <= self.sample_rate / 2:
@@ -93,6 +97,7 @@ class NoiseWaveAnalyzer:
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR
             self.steps = 0
 
+        # State PROCESSING_ERROR
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR:
             self.steps += 1
             if self.steps <= self.sample_rate / 2:
