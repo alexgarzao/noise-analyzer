@@ -41,7 +41,7 @@ class NoiseWaveAnalyzer:
             self.noise_file = None
 
         if self.noise_filename is not None:
-            self.noise_file = open('%s_%d.csv' % (self.noise_filename, self.last_file_count), 'a')
+            self.noise_file = open('%s_%d.csv' % (self.noise_filename, self.last_file_count), 'w')
         else:
             self.noise_file = None
 
