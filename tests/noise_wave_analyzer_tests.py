@@ -150,9 +150,3 @@ def test_two_waves_sr_8_values_decreasing_is_ok():
 	assert analyzer.IsNoise(48) == False
 	assert analyzer.IsNoise(40) == False
 	assert analyzer.IsNoise(30) == False
-
-
-#def test_signal_is_valid():
-#	analyzer = NoiseWaveAnalyzer.NoiseWaveAnalyzer(sample_rate=8)
-#	assert analyzer.IsNoise(101) == False
-#	assert analyzer.IsNoise(200) == False
