@@ -35,7 +35,7 @@ class Main:
     def __parser_args(self):
         '''Define the analyzer configuration.
         '''
-        parser = argparse.ArgumentParser(description = 'Identify noise signal in a sample.')
+        parser = argparse.ArgumentParser(description='Identify noise signal in a sample.')
 
         parser.add_argument(
                     '--sample-rate',

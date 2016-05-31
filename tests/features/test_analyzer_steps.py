@@ -26,7 +26,7 @@ def see_noise_values_equals_to_file(step, noise_filename, expected_noise_filenam
         "Noise file %s differ from expected file %s" % (noise_filename, expected_noise_filename)
 
 
-#-- Support routines --#
+# -- Support routines --
 
 
 def send_file_to_server(host, port, filename):
