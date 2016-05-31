@@ -3,7 +3,6 @@
 # Author: Alex S. Garzão <alexgarzao@gmail.com>
 # receiving_data.py
 
-
 import socket
 
 from stream_to_number import StreamToNumber
@@ -30,18 +29,28 @@ class ReceivingData:
         s.bind(('', self.port))        # Available in all interfaces.
         s.listen(1)
         while True:
-            stream_parser = StreamToNumber()
             conn, addr = s.accept()
-            print 'Connection received...'
-            while 1:
-                data = conn.recv(1024)
-                if not data:
-                    break
-                # print 'data reiceved: %s' % data
-                stream_parser.process_stream(data)
-                if stream_parser.size() > 1:
-                    self.analyzer.process_values(stream_parser.get_numerical_values())
 
-            self.analyzer.sample_finished()
+            self.__process_new_connection(conn)
 
             conn.close()
+
+    def __process_new_connection(self, conn):
+        '''Process the stream data that are comming in a connection.
+
+        conn: connection.
+        '''
+        print 'Connection received...'
+
+        stream_parser = StreamToNumber()
+
+        while 1:
+            data = conn.recv(1024)
+            if not data:
+                break
+            # print 'data reiceved: %s' % data
+            stream_parser.process_stream(data)
+            if stream_parser.size() > 1:
+                self.analyzer.process_values(stream_parser.get_numerical_values())
+
+        self.analyzer.sample_finished()
