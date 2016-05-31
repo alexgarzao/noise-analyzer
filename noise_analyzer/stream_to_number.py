@@ -16,6 +16,8 @@ class StreamToNumber:
 
     def process_stream(self, stream_data):
         '''Process the stream to extract the numerical values.
+
+        stream_data: stream to be processed.
         '''
         stream_data = self.buffer + stream_data
         self.buffer = ''
