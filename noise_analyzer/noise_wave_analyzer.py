@@ -109,13 +109,11 @@ class NoiseWaveAnalyzer:
     def process_values(self, data):
         '''Process values in data to known if its a noise.
 
-        data - list with the numerical values to be analyzed.
+        data: list with the numerical values to be analyzed.
         '''
         for value in data:
             if not self.is_noise(value):
                 continue
-
-#            print "Noise: %s" % value
 
             if self.noise_file is not None:
                 self.noise_file.write(str(value) + '\n')

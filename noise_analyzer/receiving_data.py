@@ -25,9 +25,11 @@ class ReceivingData:
         '''Read the stream data, parser into numerical values, and send to the analyzer class.
         '''
         print 'Reading at port %s' % self.port
+
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', self.port))        # Available in all interfaces.
         s.listen(1)
+
         while True:
             conn, addr = s.accept()
 
@@ -48,7 +50,7 @@ class ReceivingData:
             data = conn.recv(1024)
             if not data:
                 break
-            # print 'data reiceved: %s' % data
+
             stream_parser.process_stream(data)
             if stream_parser.size() > 1:
                 self.analyzer.process_values(stream_parser.get_numerical_values())
