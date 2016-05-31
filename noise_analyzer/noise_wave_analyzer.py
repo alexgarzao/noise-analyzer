@@ -11,9 +11,10 @@ class NoiseWaveAnalyzer:
 	'''
 
 	# Possible machine states (FSM) when trying to identify noise values.
-	ANALYZER_STATE_SEARCHING_HIGHEST_VALUE = 1
-	ANALYZER_STATE_SEARCHING_ERROR = 2
-	ANALYZER_STATE_PROCESSING_ERROR = 3
+	ANALYZER_STATE_WAITING_VALUES_INCREASING = 1
+	ANALYZER_STATE_SEARCHING_HIGHEST_VALUE = 2
+	ANALYZER_STATE_SEARCHING_ERROR = 3
+	ANALYZER_STATE_PROCESSING_ERROR = 4
 
 	def __init__(self, sample_rate, noise_filename=None):
 		'''Initialize the object.
@@ -27,7 +28,7 @@ class NoiseWaveAnalyzer:
 			self.noise_file = None
 		self.SampleRate = sample_rate
 		self.priorValue = 0
-		self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
+		self.state = NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING
 		self.steps = 0
 
 
@@ -39,10 +40,18 @@ class NoiseWaveAnalyzer:
 
 		# Bellow there is a FSM (Finish state machine) responsible to find noise values.
 		# To achieve this, the FSM execute the following steps:
-		# 1) Find the highest value in the stream;
-		# 2) Based on the sample_rate parameter, count the samples to be ignored before found the noise;
-		# 3) Inform the samples that there are noise values;
-		# 4) Go to state 1.
+		# 1) Find when the values are been incresed;
+		# 2) Find the highest value in the stream;
+		# 3) Based on the sample_rate parameter, count the samples to be ignored before found the noise;
+		# 4) Inform the samples that there are noise values;
+		# 5) Go to state 2.
+
+		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING:
+			if value <= self.priorValue or self.priorValue == 0:
+				self.priorValue = value
+				return False
+
+			self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 
 		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
 			if value >= self.priorValue:
