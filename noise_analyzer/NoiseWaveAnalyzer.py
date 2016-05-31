@@ -4,15 +4,16 @@
 # NoiseWaveAnalyzer.py
 
 
-class AnalyzerState:
-	SEARCHING_HIGHEST_VALUE = 1
-	SEARCHING_ERROR = 2
-	PROCESSING_ERROR = 3
 
 
 class NoiseWaveAnalyzer:
 	'''NoiseWaveAnalyzer receives a sample rate value and, based on this value, can decide if the data is a good signal or a noise.
 	'''
+
+	# Possible machine states (FSM) when trying to identify noise values.
+	ANALYZER_STATE_SEARCHING_HIGHEST_VALUE = 1
+	ANALYZER_STATE_SEARCHING_ERROR = 2
+	ANALYZER_STATE_PROCESSING_ERROR = 3
 
 	def __init__(self, sample_rate, noise_filename=None):
 		'''Initialize the object.
@@ -26,7 +27,7 @@ class NoiseWaveAnalyzer:
 			self.noise_file = None
 		self.SampleRate = sample_rate
 		self.priorValue = 0
-		self.state = AnalyzerState.SEARCHING_HIGHEST_VALUE
+		self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 		self.steps = 0
 
 
@@ -36,28 +37,28 @@ class NoiseWaveAnalyzer:
 		value: data to be analyzed.
 		'''
 
-		if self.state == AnalyzerState.SEARCHING_HIGHEST_VALUE:
+		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
 			if value >= self.priorValue:
 				self.priorValue = value
 				return False
 
-			self.state = AnalyzerState.SEARCHING_ERROR
+			self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR
 			self.steps = 1
 
-		if self.state == AnalyzerState.SEARCHING_ERROR:
+		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR:
 			self.steps += 1
 			if self.steps <= self.SampleRate / 2:
 				return False
 
-			self.state = AnalyzerState.PROCESSING_ERROR
+			self.state = NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR
 			self.steps = 0
 
-		if self.state == AnalyzerState.PROCESSING_ERROR:
+		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR:
 			self.steps += 1
 			if self.steps <= self.SampleRate / 2:
 				return True
 
-			self.state = AnalyzerState.SEARCHING_HIGHEST_VALUE
+			self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 			self.priorValue = 0
 			return False
 
