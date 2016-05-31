@@ -4,10 +4,10 @@
 # noise_wave_analyzer.py
 
 
-
-
 class NoiseWaveAnalyzer:
 	'''NoiseWaveAnalyzer receives a sample rate value and, based on this value, can decide if the data is a good signal or a noise.
+	To decide this, after found the highest value, the analyzer count, based on the sample_rate, the number of samples to be ignored before the noise values.
+	With this same approach, the analyzer knows how much samples are to be considered noise values.
 	'''
 
 	# Possible machine states (FSM) when trying to identify noise values.
@@ -36,6 +36,13 @@ class NoiseWaveAnalyzer:
 
 		value: data to be analyzed.
 		'''
+
+		# Bellow there is a FSM (Finish state machine) responsible to find noise values.
+		# To achieve this, the FSM execute the following steps:
+		# 1) Find the highest value in the stream;
+		# 2) Based on the sample_rate parameter, count the samples to be ignored before found the noise;
+		# 3) Inform the samples that there are noise values;
+		# 4) Go to state 1.
 
 		if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
 			if value >= self.priorValue:
