@@ -41,4 +41,7 @@ class ReceivingData:
                 streamParser.ProcessStream(data)
                 if streamParser.Size() > 1:
                     self.Analyzer.ProcessValues(streamParser.GetNumericalValues())
+
+            self.Analyzer.SampleFinished()
+
             conn.close()

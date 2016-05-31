@@ -15,7 +15,7 @@ class AnalyzerConfig:
         '''
         self.SampleRate = 50
         self.Port = 55678                 # Arbitraty port.
-        self.NoiseFilename = 'noise.csv'
+        self.NoiseFilename = 'noise_connection_'
 
     def load(self):
         '''Load the configuration values from the config file.
