@@ -3,17 +3,16 @@
 # Author: Alex S. Garzão <alexgarzao@gmail.com>
 # stream_to_number.py
 
+
 class StreamToNumber:
     '''Responsible to parser a stream of values to extract the numerical values.
     '''
-
 
     def __init__(self):
         '''Init method.
         '''
         self.values = []
         self.buffer = ''
-
 
     def ProcessStream(self, streamData):
         '''Process the stream to extract the numerical values.
@@ -28,7 +27,6 @@ class StreamToNumber:
             else:
                 self.buffer += c
         return self.buffer
-
 
     def GetNumericalValues(self):
         '''Return the numerical values parsed from the stream.

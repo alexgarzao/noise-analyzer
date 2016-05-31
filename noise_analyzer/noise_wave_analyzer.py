@@ -22,15 +22,14 @@ class NoiseWaveAnalyzer:
         sample_rate: is the limit to decide if a data is a wave or a noise.
         noise_filename: is the csv to be generated with the noise.
         '''
-        if noise_filename != None:
-            self.noise_file = open(noise_filename,'a')
+        if noise_filename is not None:
+            self.noise_file = open(noise_filename, 'a')
         else:
             self.noise_file = None
         self.SampleRate = sample_rate
         self.priorValue = 0
         self.state = NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING
         self.steps = 0
-
 
     def IsNoise(self, value):
         '''Verifiy if the value is a noise.
@@ -81,7 +80,6 @@ class NoiseWaveAnalyzer:
         assert False, 'Ops... State machine with error :-)'
         return
 
-
     def ProcessValues(self, data):
         '''Process values in data to known if its a noise.
 
@@ -93,5 +91,5 @@ class NoiseWaveAnalyzer:
 
 #            print "Noise: %s" % value
 
-            if self.noise_file != None:
+            if self.noise_file is not None:
                 self.noise_file.write(str(value) + '\n')

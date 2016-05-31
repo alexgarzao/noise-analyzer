@@ -7,6 +7,7 @@ from analyzer_config import AnalyzerConfig
 from noise_wave_analyzer import NoiseWaveAnalyzer
 from receiving_data import ReceivingData
 
+
 class Main:
     '''Main class. Where the magic start to happen :-)
     '''
@@ -17,17 +18,15 @@ class Main:
         self.loadConfig()
         self.defineWaveAnalyzer()
 
-
     def Run(self):
         '''Execute the program.
         '''
         print 'Starting analyzer...'
 
-        receivingData = ReceivingData(analyzer = self.NoiseWaveAnalyzer, port = self.Config.Port)
+        receivingData = ReceivingData(analyzer=self.NoiseWaveAnalyzer, port=self.Config.Port)
         receivingData.ReadAndAnalyze()
 
         print 'Analyzer finishing...'
-
 
     def loadConfig(self):
         '''Load the analyzer configuration.
@@ -35,7 +34,6 @@ class Main:
         analyzerConfig = AnalyzerConfig()
         analyzerConfig.load()
         self.Config = analyzerConfig
-
 
     def defineWaveAnalyzer(self):
         '''Define the analyzer class that will decide if the signal is a wave or a noise.
