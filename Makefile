@@ -2,6 +2,11 @@
 # Author: Alex S. Garzão <alexgarzao@gmail.com>
 # Makefile
 
+setup:
+	virtualenv .env
+	. .env/bin/activate
+	pip install -r requirements.txt
+
 tdd:	clean
 	nosetests
 
