@@ -40,7 +40,7 @@ class Main:
 	def defineWaveAnalyzer(self):
 		'''Define the analyzer class that will decide if the signal is a wave or a noise.
 		'''
-		self.NoiseWaveAnalyzer = NoiseWaveAnalyzer(self.Config.Threshold, self.Config.NoiseFilename)
+		self.NoiseWaveAnalyzer = NoiseWaveAnalyzer(self.Config.SampleRate, self.Config.NoiseFilename)
 
 
 if __name__ == "__main__":

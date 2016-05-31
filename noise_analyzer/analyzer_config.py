@@ -13,7 +13,7 @@ class AnalyzerConfig:
 	def __init__(self):
 		'''Initialize default values.
 		'''
-		self.Threshold = 100
+		self.SampleRate = 50
 		self.Port = 55678 # Arbitraty port.
 		self.NoiseFilename = 'noise.csv'
 

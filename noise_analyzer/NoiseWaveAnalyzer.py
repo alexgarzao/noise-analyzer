@@ -4,28 +4,65 @@
 # NoiseWaveAnalyzer.py
 
 
+class AnalyzerState:
+	SEARCHING_HIGHEST_VALUE = 1
+	SEARCHING_ERROR = 2
+	PROCESSING_ERROR = 3
+
+
 class NoiseWaveAnalyzer:
-	'''NoiseWaveAnalyzer receives a threshold and, based on this value, can decide if the data is a good signal or a noise.
+	'''NoiseWaveAnalyzer receives a sample rate value and, based on this value, can decide if the data is a good signal or a noise.
 	'''
 
-	def __init__(self, threshold, noise_filename=None):
+	def __init__(self, sample_rate, noise_filename=None):
 		'''Initialize the object.
 
-		threshold: is the limit to decide if a data is a wave or a noise.
+		sample_rate: is the limit to decide if a data is a wave or a noise.
 		noise_filename: is the csv to be generated with the noise.
 		'''
 		if noise_filename != None:
 			self.noise_file = open(noise_filename,'a')
 		else:
 			self.noise_file = None
-		self.Threshold = threshold
+		self.SampleRate = sample_rate
+		self.priorValue = 0
+		self.state = AnalyzerState.SEARCHING_HIGHEST_VALUE
+		self.steps = 0
+
 
 	def IsNoise(self, value):
 		'''Verifiy if the value is a noise.
 
 		value: data to be analyzed.
 		'''
-		return value <= self.Threshold
+
+		if self.state == AnalyzerState.SEARCHING_HIGHEST_VALUE:
+			if value >= self.priorValue:
+				self.priorValue = value
+				return False
+
+			self.state = AnalyzerState.SEARCHING_ERROR
+			self.steps = 1
+
+		if self.state == AnalyzerState.SEARCHING_ERROR:
+			self.steps += 1
+			if self.steps <= self.SampleRate / 2:
+				return False
+
+			self.state = AnalyzerState.PROCESSING_ERROR
+			self.steps = 0
+
+		if self.state == AnalyzerState.PROCESSING_ERROR:
+			self.steps += 1
+			if self.steps <= self.SampleRate / 2:
+				return True
+
+			self.state = AnalyzerState.SEARCHING_HIGHEST_VALUE
+			self.priorValue = 0
+			return False
+
+		assert False, 'Ops... State machine with error :-)'
+		return
 
 
 	def ProcessValues(self, data):
