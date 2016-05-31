@@ -14,12 +14,12 @@ class StreamToNumber:
         self.values = []
         self.buffer = ''
 
-    def ProcessStream(self, streamData):
+    def process_stream(self, stream_data):
         '''Process the stream to extract the numerical values.
         '''
-        streamData = self.buffer + streamData
+        stream_data = self.buffer + stream_data
         self.buffer = ''
-        for c in streamData:
+        for c in stream_data:
             if c < '0' or c > '9':
                 if self.buffer != '':
                     self.values.append(int(self.buffer))
@@ -28,7 +28,7 @@ class StreamToNumber:
                 self.buffer += c
         return self.buffer
 
-    def GetNumericalValues(self):
+    def get_numerical_values(self):
         '''Return the numerical values parsed from the stream.
 
         The values are returned and are cleaned from here.
@@ -37,7 +37,7 @@ class StreamToNumber:
         self.values = []
         return result
 
-    def Size(self):
+    def size(self):
         '''Return the number of numerical values parsed.
         '''
         return len(self.values)

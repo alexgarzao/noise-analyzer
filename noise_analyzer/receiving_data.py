@@ -19,18 +19,18 @@ class ReceivingData:
         analyzer: define the analyzer (class) responsible for analyze the data stream and tell if is a wave (or noise) signal.
         port: port where the analyzer will accept connections.
         '''
-        self.Analyzer = analyzer
-        self.Port = port
+        self.analyzer = analyzer
+        self.port = port
 
-    def ReadAndAnalyze(self):
+    def read_and_analyze(self):
         '''Read the stream data, parser into numerical values, and send to the analyzer class.
         '''
-        print 'Reading at port %s' % self.Port
+        print 'Reading at port %s' % self.port
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', self.Port))        # Available in all interfaces.
+        s.bind(('', self.port))        # Available in all interfaces.
         s.listen(1)
         while True:
-            streamParser = StreamToNumber()
+            stream_parser = StreamToNumber()
             conn, addr = s.accept()
             print 'Connection received...'
             while 1:
@@ -38,10 +38,10 @@ class ReceivingData:
                 if not data:
                     break
                 # print 'data reiceved: %s' % data
-                streamParser.ProcessStream(data)
-                if streamParser.Size() > 1:
-                    self.Analyzer.ProcessValues(streamParser.GetNumericalValues())
+                stream_parser.process_stream(data)
+                if stream_parser.size() > 1:
+                    self.analyzer.process_values(stream_parser.get_numerical_values())
 
-            self.Analyzer.SampleFinished()
+            self.analyzer.sample_finished()
 
             conn.close()

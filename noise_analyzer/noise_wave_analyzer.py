@@ -23,29 +23,29 @@ class NoiseWaveAnalyzer:
         sample_rate: is the limit to decide if a data is a wave or a noise.
         noise_filename: is the csv to be generated with the noise.
         '''
-        self.SampleRate = sample_rate
+        self.sample_rate = sample_rate
         self.noise_filename = noise_filename
-        self.priorValue = 0
+        self.prior_value = 0
         self.state = NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING
         self.steps = 0
-        self.lastFileCount = 0
+        self.last_file_count = 0
         self.noise_file = None
 
-        self.__newNoiseFile()
+        self.__new_noise_file()
 
-    def __newNoiseFile(self):
-        self.lastFileCount += 1
+    def __new_noise_file(self):
+        self.last_file_count += 1
 
         if self.noise_file is not None:
             self.noise_file.close()
             self.noise_file = None
 
         if self.noise_filename is not None:
-            self.noise_file = open('%s_%d.csv' % (self.noise_filename, self.lastFileCount), 'a')
+            self.noise_file = open('%s_%d.csv' % (self.noise_filename, self.last_file_count), 'a')
         else:
             self.noise_file = None
 
-    def IsNoise(self, value):
+    def is_noise(self, value):
         '''Verifiy if the value is a noise.
 
         value: data to be analyzed.
@@ -60,24 +60,24 @@ class NoiseWaveAnalyzer:
         # 5) Go to state 2.
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_WAITING_VALUES_INCREASING:
-            if value <= self.priorValue or self.priorValue == 0:
-                self.priorValue = value
+            if value <= self.prior_value or self.prior_value == 0:
+                self.prior_value = value
                 return False
 
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE:
-            if value  >= self.priorValue:
-                self.priorValue = value
+            if value >= self.prior_value:
+                self.prior_value = value
                 return False
 
-            self.priorValue = value
+            self.prior_value = value
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND
             return False
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_ONE_LOWER_VALUE_FOUND:
-            if value >= self.priorValue:
-                self.priorValue = value
+            if value >= self.prior_value:
+                self.prior_value = value
                 self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
                 return False
 
@@ -87,7 +87,7 @@ class NoiseWaveAnalyzer:
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_ERROR:
             self.steps += 1
-            if self.steps <= self.SampleRate / 2:
+            if self.steps <= self.sample_rate / 2:
                 return False
 
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR
@@ -95,24 +95,24 @@ class NoiseWaveAnalyzer:
 
         if self.state == NoiseWaveAnalyzer.ANALYZER_STATE_PROCESSING_ERROR:
             self.steps += 1
-            if self.steps <= self.SampleRate / 2:
+            if self.steps <= self.sample_rate / 2:
                 return True
 
             self.state = NoiseWaveAnalyzer.ANALYZER_STATE_SEARCHING_HIGHEST_VALUE
-            self.priorValue = 0
+            self.prior_value = 0
             self.steps = 0
             return False
 
         assert False, 'Ops... State machine with error :-)'
         return
 
-    def ProcessValues(self, data):
+    def process_values(self, data):
         '''Process values in data to known if its a noise.
 
         data - list with the numerical values to be analyzed.
         '''
         for value in data:
-            if not self.IsNoise(value):
+            if not self.is_noise(value):
                 continue
 
 #            print "Noise: %s" % value
@@ -120,7 +120,7 @@ class NoiseWaveAnalyzer:
             if self.noise_file is not None:
                 self.noise_file.write(str(value) + '\n')
 
-    def SampleFinished(self):
+    def sample_finished(self):
         '''Notify that the old file noise can be closed, and a new file must be created.
         '''
-        self.__newNoiseFile()
+        self.__new_noise_file()

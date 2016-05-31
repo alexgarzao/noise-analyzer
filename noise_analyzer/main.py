@@ -15,32 +15,32 @@ class Main:
     def __init__(self):
         '''Initialize default class values.
         '''
-        self.loadConfig()
-        self.defineWaveAnalyzer()
+        self.__load_config()
+        self.__define_wave_analyzer()
 
-    def Run(self):
+    def run(self):
         '''Execute the program.
         '''
         print 'Starting analyzer...'
 
-        receivingData = ReceivingData(analyzer=self.NoiseWaveAnalyzer, port=self.Config.Port)
-        receivingData.ReadAndAnalyze()
+        receiving_data = ReceivingData(analyzer=self.noise_wave_analyzer, port=self.config.port)
+        receiving_data.read_and_analyze()
 
         print 'Analyzer finishing...'
 
-    def loadConfig(self):
+    def __load_config(self):
         '''Load the analyzer configuration.
         '''
-        analyzerConfig = AnalyzerConfig()
-        analyzerConfig.load()
-        self.Config = analyzerConfig
+        analyzer_config = AnalyzerConfig()
+        analyzer_config.load()
+        self.config = analyzer_config
 
-    def defineWaveAnalyzer(self):
+    def __define_wave_analyzer(self):
         '''Define the analyzer class that will decide if the signal is a wave or a noise.
         '''
-        self.NoiseWaveAnalyzer = NoiseWaveAnalyzer(self.Config.SampleRate, self.Config.NoiseFilename)
+        self.noise_wave_analyzer = NoiseWaveAnalyzer(self.config.sample_rate, self.config.noise_filename)
 
 
 if __name__ == "__main__":
     main = Main()
-    main.Run()
+    main.run()

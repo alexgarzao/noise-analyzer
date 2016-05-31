@@ -9,112 +9,112 @@ from noise_analyzer import stream_to_number
 
 def test_stream_with_one_value():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    streamData = '123\n'
-    remainingData = stn.ProcessStream(streamData)
-    assert stn.Size() == 1
-    assert remainingData == '', 'expected nothing, but remainingData = "%s"' % remainingData
+    stream_data = '123\n'
+    remaining_data = stn.process_stream(stream_data)
+    assert stn.size() == 1
+    assert remaining_data == '', 'expected nothing, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 1
-    assert numericalValues[0] == 123
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 1
+    assert numerical_values[0] == 123
 
 
 def test_stream_with_two_values():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    streamData = '123\n456\n'
-    remainingData = stn.ProcessStream(streamData)
-    assert stn.Size() == 2
-    assert remainingData == '', 'expected nothing, but remainingData = "%s"' % remainingData
+    stream_data = '123\n456\n'
+    remaining_data = stn.process_stream(stream_data)
+    assert stn.size() == 2
+    assert remaining_data == '', 'expected nothing, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 2
-    assert numericalValues[0] == 123
-    assert numericalValues[1] == 456
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 2
+    assert numerical_values[0] == 123
+    assert numerical_values[1] == 456
 
 
 def test_stream_with_one_complete_and_one_incomplete_value():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    remainingData = stn.ProcessStream('123\n456')
-    assert stn.Size() == 1
-    assert remainingData == '456', 'expected 456, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('123\n456')
+    assert stn.size() == 1
+    assert remaining_data == '456', 'expected 456, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 1
-    assert numericalValues[0] == 123
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 1
+    assert numerical_values[0] == 123
 
 
 def test_stream_with_one_incomplete_value():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    remainingData = stn.ProcessStream('123')
-    assert stn.Size() == 0
-    assert remainingData == '123', 'expected 123, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('123')
+    assert stn.size() == 0
+    assert remaining_data == '123', 'expected 123, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert len(numericalValues) == 0
+    numerical_values = stn.get_numerical_values()
+    assert len(numerical_values) == 0
 
 
 def test_stream_with_one_value_but_starting_with_delimiter():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    streamData = '\n123\n'
-    remainingData = stn.ProcessStream(streamData)
+    stream_data = '\n123\n'
+    remaining_data = stn.process_stream(stream_data)
 
-    assert stn.Size() == 1
-    assert remainingData == ''
+    assert stn.size() == 1
+    assert remaining_data == ''
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 1
-    assert numericalValues[0] == 123
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 1
+    assert numerical_values[0] == 123
 
 
 def test_stream_with_one_value_but_in_two_blocks():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    remainingData = stn.ProcessStream('12')
-    assert stn.Size() == 0
-    assert remainingData == '12', 'expected 12, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('12')
+    assert stn.size() == 0
+    assert remaining_data == '12', 'expected 12, but remaining_data = "%s"' % remaining_data
 
-    remainingData = stn.ProcessStream('3\n')
-    assert stn.Size() == 1
-    assert remainingData == '', 'expected nothing, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('3\n')
+    assert stn.size() == 1
+    assert remaining_data == '', 'expected nothing, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 1
-    assert numericalValues[0] == 123
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 1
+    assert numerical_values[0] == 123
 
 
 def test_stream_with_one_value_but_in_three_blocks():
     stn = stream_to_number.StreamToNumber()
-    assert stn.Size() == 0
+    assert stn.size() == 0
 
-    remainingData = stn.ProcessStream('12')
-    assert stn.Size() == 0
-    assert remainingData == '12', 'expected 12, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('12')
+    assert stn.size() == 0
+    assert remaining_data == '12', 'expected 12, but remaining_data = "%s"' % remaining_data
 
-    remainingData = stn.ProcessStream('3')
-    assert stn.Size() == 0
-    assert remainingData == '123', 'expected 123, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('3')
+    assert stn.size() == 0
+    assert remaining_data == '123', 'expected 123, but remaining_data = "%s"' % remaining_data
 
-    remainingData = stn.ProcessStream('\n')
-    assert stn.Size() == 1
-    assert remainingData == '', 'expected nothing, but remainingData = "%s"' % remainingData
+    remaining_data = stn.process_stream('\n')
+    assert stn.size() == 1
+    assert remaining_data == '', 'expected nothing, but remaining_data = "%s"' % remaining_data
 
-    numericalValues = stn.GetNumericalValues()
-    assert stn.Size() == 0
-    assert len(numericalValues) == 1
-    assert numericalValues[0] == 123
+    numerical_values = stn.get_numerical_values()
+    assert stn.size() == 0
+    assert len(numerical_values) == 1
+    assert numerical_values[0] == 123
