@@ -52,7 +52,7 @@ class ReceivingData:
                 break
 
             stream_parser.process_stream(data)
-            if stream_parser.size() > 1:
+            if stream_parser.size() > 0:
                 self.analyzer.process_values(stream_parser.get_numerical_values())
 
         self.analyzer.sample_finished()
