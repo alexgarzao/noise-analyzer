@@ -82,7 +82,7 @@ class NoiseWaveAnalyzer:
 			if not self.IsNoise(value):
 				continue
 
-			print "Noise: %s" % value
+#			print "Noise: %s" % value
 
 			if self.noise_file != None:
 				self.noise_file.write(str(value) + '\n')
